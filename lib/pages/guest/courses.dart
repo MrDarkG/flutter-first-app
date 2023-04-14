@@ -16,11 +16,11 @@ class _CoursesState extends State<Courses> {
     super.initState();
     getCourses();
   }
-  String query = "?page=2";
+  String query = "?page=1";
   List<dynamic> productMap = [];
 
   getCourses() async {
-    String url = "https://www.tlancer.net:5000/api/courses/search$query";
+    String url = "http://demo.api.tlancer.net/api/courses/search$query";
     try {
       Response response = await get(Uri.parse(url));
       Map data = jsonDecode(response.body);
@@ -31,13 +31,13 @@ class _CoursesState extends State<Courses> {
     } on Exception catch (exception) {
       setState(() {
         status = exception.toString();
-
       });
     }
     catch (error) {
       setState(() {
         status = error.toString();
       });
+      print(status);
     }
 
   }
@@ -94,6 +94,7 @@ class _CoursesState extends State<Courses> {
           clipBehavior: Clip.antiAlias,
           child: Column(
             children: [
+              Text(status),
               ListTile(
                 leading:getAvatarImage(e['user']['avatar']),
                 title: Text(e['title']),
