@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tt/pages/guest/Register.dart';
 import 'package:tt/pages/guest/login.dart';
 import 'package:tt/pages/guest/welcome.dart';
 import 'package:tt/pages/guest/courses.dart';
@@ -10,17 +11,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _selectedIndex = 0;
+  @override
+  int _selectedIndex = 1;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Welcome(),
     Courses(),
     Login(),
-    Text(
-      'Index 3: Settings',
-      style: optionStyle,
-    ),
+    Register(),
   ];
 
   void _onItemTapped(int index) {
