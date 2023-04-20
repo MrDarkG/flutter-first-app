@@ -24,12 +24,38 @@ class _LoginState extends State<Login> {
   storeToken(String token) async {
     final SharedPreferences prefs = await _prefs;
     setState(() {
-      var _counter = prefs.setString('token', token).then((bool success) {
-        return token;
-      });
+      var _counter = prefs.setString('token', token)
+          .then((bool success) {
+          return token;
+        });
     });
   }
+  storeUser(Map user) async {
+    final SharedPreferences prefs = await _prefs;
+    setState(() {
+      var name = prefs.setString('token', user['first_name'])
+          .then((bool success) {
+        return user;
+      });
+      var lastName = prefs.setString('token', user['last_name'])
+          .then((bool success) {
+        return user;
+      });
+      var avatar = prefs.setString('token', user['avatar'])
+          .then((bool success) {
+        return user;
+      });
 
+    });
+  }
+  grabUserData(token) async {
+    var url = Uri.https('www.tlancer.net:5000', '/api/user');
+    Response response = await post(url,
+        headers: {HttpHeaders.acceptHeader: 'application/json', HttpHeaders.authorizationHeader: token});
+    Map respData = jsonDecode(response.body);
+    storeUser(respData);
+    print(respData);
+  }
   login() async {
     Map data = {'email': email.text, 'password': password.text};
     var url = Uri.https('www.tlancer.net:5000', '/api/login');
@@ -42,7 +68,8 @@ class _LoginState extends State<Login> {
       setState(() {
         errors = '';
       });
-      Navigator.pushNamed(context, '/courses');
+      Navigator.pushNamed(context, '/user/courses');
+      grabUserData(Bearer);
     }
 
     if (respData.containsKey('message')) {

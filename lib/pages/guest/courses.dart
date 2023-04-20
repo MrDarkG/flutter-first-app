@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tt/pages/guest/detailedCourse.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Courses extends StatefulWidget {
   const Courses({Key? key}) : super(key: key);
@@ -12,6 +13,9 @@ class Courses extends StatefulWidget {
 }
 
 class _CoursesState extends State<Courses> {
+
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   void initState() {
     // TODO
     super.initState();
@@ -27,7 +31,10 @@ class _CoursesState extends State<Courses> {
   String generateQuery() {
     return "?page=$current_page";
   }
-
+  Future<void> printToken() async {
+    final SharedPreferences prefs = await _prefs;
+    print(prefs.getString('token'));
+  }
   getCourses() async {
     String url =
         "http://demo.api.tlancer.net/api/courses/search${generateQuery()}";
